@@ -11,6 +11,25 @@ Window {
     property int rect
 
 
+    ListModel{
+        id : slideModel
+        ListElement{
+            title : "Work"
+        }
+        ListElement{
+            title : "Resources"
+
+        }
+        ListElement{
+            title : "Time"
+        }
+
+    }
+    property int currentIndex : 0
+
+
+
+
 
     RowLayout {
         anchors.centerIn: parent
@@ -45,8 +64,9 @@ Window {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: mouse => {
-                               console.log("Left arrow head clicked")
-
+                               currentIndex = (currentIndex - 1 + slideModel.count) % slideModel.count;
+                               //TODO
+                               //save the progress of the user in the form of a timetable
                 }
             }
         }
@@ -59,7 +79,9 @@ Window {
             Layout.alignment: Qt.AlignVCenter
             Text {
                 id : rect1txt
-                            text: "Rectangle 1"
+                            text: slideModel.get(currentIndex).title
+                            //TODO
+                            //update the other components to the slide models components
                             anchors.top: parent.top; anchors.left: parent.left
                             anchors.margins: 8
                             font.bold: true
@@ -75,7 +97,9 @@ Window {
             Layout.alignment: Qt.AlignVCenter
             Text {
                 id : rect2txt
-                            text: "Rectangle 2"
+                            text: slideModel.get((currentIndex + 1) % slideModel.count).title
+                            //TODO
+                            //update the other components to the slide models components
                             anchors.top: parent.top; anchors.left: parent.left
                             anchors.margins: 8
                             font.bold: true
@@ -112,8 +136,7 @@ Window {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: mouse => {
-                               console.log("Right arrow head clicked")
-
+                               currentIndex = (currentIndex + 1) % slideModel.count;
                 }
             }
         }
