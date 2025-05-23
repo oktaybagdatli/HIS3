@@ -1,11 +1,15 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <slidemanager.h>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    SlideManager slideManager;
 
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("slideManager",&slideManager);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

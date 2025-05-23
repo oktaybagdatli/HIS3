@@ -17,6 +17,12 @@ qt_add_qml_module(appHIS3
     VERSION 1.0
     QML_FILES
         Main.qml
+        SOURCES
+        SOURCES slidemodel.h slidemodel.cpp
+        SOURCES slidemanager.h slidemanager.cpp
+        QML_FILES ResourcesSlide.qml
+        QML_FILES WorkSlide.qml
+        QML_FILES TimeSlide.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

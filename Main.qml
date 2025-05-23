@@ -1,6 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
+import "."
 
 Window {
     id: window
@@ -8,24 +10,18 @@ Window {
     width: 640
     height: 480
     title: "HIS3"
-    property int rect
+
+    function pickComponent(role) {
+           switch(role) {
+           case "work":      return workSlide;
+           case "resources": return resourcesSlide;
+           case "time":      return timeSlide;
+           default:          return workSlide;
+           }
+       }
 
 
-    ListModel{
-        id : slideModel
-        ListElement{
-            title : "Work"
-        }
-        ListElement{
-            title : "Resources"
 
-        }
-        ListElement{
-            title : "Time"
-        }
-
-    }
-    property int currentIndex : 0
 
 
 
@@ -64,47 +60,54 @@ Window {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: mouse => {
-                               currentIndex = (currentIndex - 1 + slideModel.count) % slideModel.count;
+                               slideManager.previous();
                                //TODO
                                //save the progress of the user in the form of a timetable
+                               //A tester
+                               // correcte maj depuis les methodes de C++ avec un console.log()
+
                 }
             }
         }
 
         // Rectangle 1
-        Rectangle {
-            id: rect1
-            Layout.preferredWidth: window.width * 0.3 ; Layout.preferredHeight: window.height * 0.5
-            color: "skyblue"
-            Layout.alignment: Qt.AlignVCenter
-            Text {
-                id : rect1txt
-                            text: slideModel.get(currentIndex).title
-                            //TODO
-                            //update the other components to the slide models components
-                            anchors.top: parent.top; anchors.left: parent.left
-                            anchors.margins: 8
-                            font.bold: true
-                            color: "black"
-                        }
+        Loader {
+                    id: loaderA
+                    Layout.preferredWidth: window.width*0.3
+                    Layout.preferredHeight: window.height*0.5
+                    sourceComponent: pickComponent(
+                                         slideManager.componentRoleAt(slideManager.currentIndex)
+                                         )
+                    onLoaded: {
+                        item.title = slideManager.titleAt(slideManager.currentIndex);
+                        item.notes =slideManager.notesAt(slideManager.currentIndex);
+                        item.dueDate  = slideManager.dueDateAt(slideManager.currentIndex);
+                        item.notes_changed.connect(text =>{slideManager.setNotes(slideManager.currentIndex, text);
+                                                   console.log(slideManager.notesAt(slideManager.currentIndex))});
+                        item.due_date_changed.connect(date => {slideManager.setDueDate(slideManager.currentIndex,date)});
+
+
+
+                    }
         }
 
         // Rectangle 2
-        Rectangle {
-            id: rect2
-            Layout.preferredWidth: window.width * 0.3;   Layout.preferredHeight: window.height* 0.5
-            color: "lightgreen"
-            Layout.alignment: Qt.AlignVCenter
-            Text {
-                id : rect2txt
-                            text: slideModel.get((currentIndex + 1) % slideModel.count).title
-                            //TODO
-                            //update the other components to the slide models components
-                            anchors.top: parent.top; anchors.left: parent.left
-                            anchors.margins: 8
-                            font.bold: true
-                            color: "black"
-                        }
+        Loader {
+                    id: loaderB
+                    Layout.preferredWidth: window.width*0.3
+                    Layout.preferredHeight: window.height*0.5
+                    sourceComponent: pickComponent(
+                                         slideManager.componentRoleAt((slideManager.currentIndex + 1) % slideManager.count()))
+                    onLoaded: {
+                        var idx = (slideManager.currentIndex+1)%slideManager.count();
+                        //load the data from c++
+                        item.title = slideManager.titleAt(idx);
+                        item.notes =slideManager.notesAt(idx);
+                        item.dueDate  = slideManager.dueDateAt(idx);
+                        item.notes_changed.connect(text =>{slideManager.setNotes(idx, text)});
+                        item.due_date_changed.connect(date => {slideManager.setDueDate(idx,date)});
+
+                    }
         }
 
         // right arrow
@@ -136,9 +139,27 @@ Window {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onClicked: mouse => {
-                               currentIndex = (currentIndex + 1) % slideModel.count;
+                    slideManager.next()
                 }
             }
         }
-    }
+    }//end of RowLayout
+
+
+
+
+    Component {
+            id: workSlide
+            WorkSlide { }
+        }
+        Component {
+            id: resourcesSlide
+            ResourcesSlide { }
+        }
+        Component {
+            id: timeSlide
+            TimeSlide { }
+        }
+
+
 }
