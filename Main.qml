@@ -11,14 +11,28 @@ Window {
     height: 480
     title: "HIS3"
 
-    function pickComponent(role) {
-           switch(role) {
-           case "work":      return workSlide;
-           case "resources": return resourcesSlide;
-           case "time":      return timeSlide;
-           default:          return workSlide;
-           }
-       }
+    function pickComponent(nbRect, nbIndex){
+        if (nbRect ===  1){
+            switch(nbIndex){
+            case 0:
+                return workSlide
+            case 1:
+                return resourcesSlide
+            case 2:
+                return workSlide
+            }
+
+        }else if(nbRect === 2){
+            switch(nbIndex){
+            case 0:
+                return timeSlide
+            case 1:
+                return timeSlide
+            case 2:
+                return resourcesSlide
+            }
+        }
+    }
 
 
 
@@ -75,16 +89,19 @@ Window {
                     id: loaderA
                     Layout.preferredWidth: window.width*0.3
                     Layout.preferredHeight: window.height*0.5
-                    sourceComponent: pickComponent(
-                                         slideManager.componentRoleAt(slideManager.currentIndex)
-                                         )
+                    sourceComponent: pickComponent(1, slideManager.currentIndex)
                     onLoaded: {
-                        item.title = slideManager.titleAt(slideManager.currentIndex);
-                        item.notes =slideManager.notesAt(slideManager.currentIndex);
-                        item.dueDate  = slideManager.dueDateAt(slideManager.currentIndex);
-                        item.notes_changed.connect(text =>{slideManager.setNotes(slideManager.currentIndex, text);
-                                                   console.log(slideManager.notesAt(slideManager.currentIndex))});
-                        item.due_date_changed.connect(date => {slideManager.setDueDate(slideManager.currentIndex,date)});
+                        switch (slideManager.currentIndex) {
+                                        case 0: // Work→Time
+                                            item.listModel = slideManager.workItemsModel
+                                            break
+                                        case 2: // Work→Resources
+                                            item.listModel = slideManager.workItemsModel
+                                            break
+                                        case 1: // Resources→Time
+                                            item.listModel = slideManager.resourceItemsModel
+                                            break
+                        }
 
 
 
@@ -96,16 +113,22 @@ Window {
                     id: loaderB
                     Layout.preferredWidth: window.width*0.3
                     Layout.preferredHeight: window.height*0.5
-                    sourceComponent: pickComponent(
-                                         slideManager.componentRoleAt((slideManager.currentIndex + 1) % slideManager.count()))
+                    sourceComponent: pickComponent(2, slideManager.currentIndex)
                     onLoaded: {
-                        var idx = (slideManager.currentIndex+1)%slideManager.count();
-                        //load the data from c++
-                        item.title = slideManager.titleAt(idx);
-                        item.notes =slideManager.notesAt(idx);
-                        item.dueDate  = slideManager.dueDateAt(idx);
-                        item.notes_changed.connect(text =>{slideManager.setNotes(idx, text)});
-                        item.due_date_changed.connect(date => {slideManager.setDueDate(idx,date)});
+                        switch (slideManager.currentIndex) {
+                                        case 0: // Work→Time
+                                            item.listModel  = slideManager.timeItemsModel
+                                            item.acceptDrop = "workToTime"
+                                            break
+                                        case 1: // Resources→Time
+                                            item.listModel  = slideManager.timeItemsModel
+                                            item.acceptDrop = "resourceToTime"
+                                            break
+                                        case 2: // Work→Resources
+                                            item.listModel  = slideManager.resourceItemsModel
+
+                                            break
+                        }
 
                     }
         }

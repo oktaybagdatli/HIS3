@@ -8,35 +8,25 @@ Rectangle {
     anchors.fill: parent
 
 
-    property alias title : header.text
-    property string notes
-    property string dueDate
+    property var listModel
 
-    signal notes_changed(string notes)
-    signal due_date_changed(string dueDate)
+        ListView {
+            anchors.fill: parent
+            clip: false
+            model: listModel
+            delegate: Item {
+                width: parent.width; height: 40
+                Text { text: model.display; color: "white"; anchors.verticalCenter: parent.verticalCenter; anchors.left: parent.left; anchors.leftMargin: 8 }
 
-    ColumnLayout {
-        anchors.fill: parent; anchors.margins: 12; spacing: 8
+                MouseArea {
+                    anchors.fill: parent
+                    drag.target: parent
+                    onPressAndHold : drag.startDrag()
+                }
+                Drag.active: parent.Drag.active
+                Drag.hotSpot.x: width/2; Drag.hotSpot.y: height/2
+                Drag.mimeData: { "fromIndex": index }
 
-        Text {
-            id : header
-            font.pixelSize: 24; color: "white"
-        }
-        TextArea {
-            Layout.fillWidth: true; Layout.fillHeight: true
-            placeholderText: "Your notes…"
-            text: notes
-            onTextChanged: {
-                notes = text;
-                notes_changed(text)
             }
         }
-        TextInput{
-            Layout.fillWidth: true
-            text: dueDate
-            onTextChanged: {
-                dueDate = text; due_date_changed(text)
-                }
-        }
-    }
 }

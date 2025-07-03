@@ -7,56 +7,38 @@ Rectangle {
     radius: 8
     anchors.fill: parent
 
-    property alias title : header.text
-    property string notes
-    property string dueDate
+    property var listModel
 
-    signal notes_changed(string notes)
-    signal due_date_changed(string dueDate)
-
-
-    //TODO
-    //Change it to the proper layout and items
-        ColumnLayout {
-            anchors.fill: parent; anchors.margins: 12; spacing: 8
-
-            Text {
-                id : header
-                font.pixelSize: 24; color: "white"
-            }
-            TextArea {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                placeholderText: "Your notes…"
-                text: notes
-                onTextChanged: {
-                    notes = text;
-                    notes_changed(text);
+        ListView {
+            anchors.fill: parent
+            clip: false
+            model: listModel
+            delegate: Item {
+                width: parent.width; height: 40
+                Text {
+                    text: model.display
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 8
                 }
+
+                // enable drag always
+                MouseArea {
+                    anchors.fill: parent
+                    drag.target: parent
+                    onPressAndHold: drag.startDrag()
+                }
+                Drag.active: parent.Drag.active
+                Drag.hotSpot.x: width/2
+                Drag.hotSpot.y: height/2
+                Drag.mimeData: { "fromIndex": index }
+
             }
-            TextInput{
-                Layout.fillWidth: true
-                text: dueDate
-                onTextChanged: {
-                    dueDate = text;
-                    due_date_changed(text);
-                    }
-            }
+
         }
 
 
-    //ListView {
-    //    anchors.fill: parent; anchors.margins: 12
-    //    model: ListModel {
-    //        // demo data; in real use you might load from C++ too
-    //        ListElement { url: "https://qt.io"; desc: "Qt Homepage" }
-    //    }
-    //    delegate: RowLayout {
-    //        spacing: 6; Layout.alignment: Qt.AlignVCenter
-    //        Text { text: desc; color: "white" }
-    //        Button {
-    //            text: "Open"
-    //            onClicked: Qt.openUrlExternally(url)
-    //        }
-    //    }
-    //}
+
+
 }
