@@ -6,6 +6,7 @@ Rectangle {
     color: "#4A90E2"
     radius: 8
     anchors.fill: parent
+    clip:false
 
 
     property var listModel
@@ -15,17 +16,28 @@ Rectangle {
             clip: false
             model: listModel
             delegate: Item {
+                id : delegateItem
                 width: parent.width; height: 40
-                Text { text: model.display; color: "white"; anchors.verticalCenter: parent.verticalCenter; anchors.left: parent.left; anchors.leftMargin: 8 }
+                Text {
+                    id : label
+                    text: model.display
+                    color: "white"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: 8
+                }
 
                 MouseArea {
+                    id : dragArea
                     anchors.fill: parent
-                    drag.target: parent
-                    onPressAndHold : drag.startDrag()
+                    drag.target: delegateItem
+                    onPressAndHold : {
+                        drag.startDrag(Qt.CopyAction)
+                    }
                 }
-                Drag.active: parent.Drag.active
+                Drag.active : dragArea.drag.active
                 Drag.hotSpot.x: width/2; Drag.hotSpot.y: height/2
-                Drag.mimeData: { "fromIndex": index }
+                Drag.mimeData: { "application/x-item-index":  index.toString()}
 
             }
         }
