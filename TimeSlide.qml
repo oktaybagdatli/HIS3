@@ -18,6 +18,7 @@ Rectangle {
 
         onDropped: function(drag) {
             var src = parseInt(drag.getDataAsString("application/x-item-index"));
+            console.log(src);
             var dst = Math.floor(drag.x / grid.cellWidth);
             if (acceptDrop === "workToTime")
                 slideManager.moveWorkToTimeAt(src, dst);

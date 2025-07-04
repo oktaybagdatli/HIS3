@@ -20,7 +20,7 @@ Rectangle {
                 Text {
                     id : label
                     text: model.display
-                    color: "white"
+                    color: "black"
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.leftMargin: 8
@@ -36,6 +36,7 @@ Rectangle {
                         drag.startDrag(Qt.CopyAction)
                     }
                 }
+                Drag.keys: []
                 Drag.active: dragArea.drag.active
                 Drag.hotSpot.x: width/2
                 Drag.hotSpot.y: height/2

@@ -21,7 +21,7 @@ Rectangle {
                 Text {
                     id : label
                     text: model.display
-                    color: "white"
+                    color: "black"
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.leftMargin: 8
@@ -33,6 +33,7 @@ Rectangle {
                     drag.target: delegateItem
                     onPressAndHold : {
                         drag.startDrag(Qt.CopyAction)
+                        drag.YAxis
                     }
                 }
                 Drag.active : dragArea.drag.active

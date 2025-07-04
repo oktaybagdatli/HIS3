@@ -83,6 +83,30 @@ Window {
                 }
             }
         }
+        // Rectangle 2
+        Loader {
+                    id: loaderB
+                    Layout.preferredWidth: window.width*0.3
+                    Layout.preferredHeight: window.height*0.5
+                    sourceComponent: pickComponent(2, slideManager.currentIndex)
+                    onLoaded: {
+                        switch (slideManager.currentIndex) {
+                                        case 0: // Work→Time
+                                            item.listModel  = slideManager.timeItemsModel
+                                            item.acceptDrop = "workToTime"
+                                            break
+                                        case 1: // Resources→Time
+                                            item.listModel  = slideManager.timeItemsModel
+                                            item.acceptDrop = "resourceToTime"
+                                            break
+                                        case 2: // Work→Resources
+                                            item.listModel  = slideManager.resourceItemsModel
+
+                                            break
+                        }
+
+                    }
+        }
 
         // Rectangle 1
         Loader {
@@ -108,30 +132,7 @@ Window {
                     }
         }
 
-        // Rectangle 2
-        Loader {
-                    id: loaderB
-                    Layout.preferredWidth: window.width*0.3
-                    Layout.preferredHeight: window.height*0.5
-                    sourceComponent: pickComponent(2, slideManager.currentIndex)
-                    onLoaded: {
-                        switch (slideManager.currentIndex) {
-                                        case 0: // Work→Time
-                                            item.listModel  = slideManager.timeItemsModel
-                                            item.acceptDrop = "workToTime"
-                                            break
-                                        case 1: // Resources→Time
-                                            item.listModel  = slideManager.timeItemsModel
-                                            item.acceptDrop = "resourceToTime"
-                                            break
-                                        case 2: // Work→Resources
-                                            item.listModel  = slideManager.resourceItemsModel
 
-                                            break
-                        }
-
-                    }
-        }
 
         // right arrow
         Canvas {
