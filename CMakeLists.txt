@@ -18,7 +18,7 @@ qt_add_qml_module(appHIS3
     QML_FILES
         Main.qml
         SOURCES
-        SOURCES slidemodel.h slidemodel.cpp
+        SOURCES
         SOURCES slidemanager.h slidemanager.cpp
         QML_FILES ResourcesSlide.qml
         QML_FILES WorkSlide.qml

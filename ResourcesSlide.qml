@@ -11,6 +11,7 @@ Rectangle {
     property var listModel
 
         ListView {
+            id:list
             anchors.fill: parent
             clip: false
             model: listModel
@@ -32,11 +33,18 @@ Rectangle {
                     anchors.fill: parent
                     drag.target : delegateItem
 
+                    onClicked: {
+                        drag.startDrag(Qt.CopyAction)
+                        console.log("drag started")
+                    }
+
                     onPressAndHold:{
                         drag.startDrag(Qt.CopyAction)
+                        console.log("drag start")
+
                     }
                 }
-                Drag.keys: []
+                Drag.keys: ["application/x-item-index"]
                 Drag.active: dragArea.drag.active
                 Drag.hotSpot.x: width/2
                 Drag.hotSpot.y: height/2

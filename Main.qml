@@ -5,6 +5,8 @@ import QtQuick.Controls 2.15
 import "."
 
 Window {
+
+
     id: window
     visible: true
     width: 640
@@ -33,6 +35,8 @@ Window {
             }
         }
     }
+
+
 
 
 
@@ -105,6 +109,7 @@ Window {
                                             break
                         }
 
+
                     }
         }
 
@@ -126,6 +131,7 @@ Window {
                                             item.listModel = slideManager.resourceItemsModel
                                             break
                         }
+
 
 
 

@@ -5,9 +5,7 @@
 SlideManager::SlideManager(QObject *parent)
     : QObject(parent)
 {
-    m_model.addSlide({ "Work",       "", "", "work" });
-    m_model.addSlide({ "Ressources", "", "", "resources" });
-    m_model.addSlide({ "Time",       "", "", "time" });
+
 
     //initialization with the service calls
     //get operators, activitys, shifts(maybe not)
@@ -17,51 +15,15 @@ SlideManager::SlideManager(QObject *parent)
 
 }
 
-//accesibility functions can be filtered and reduced
-int SlideManager::count() const{
-    return m_model.rowCount();
-}
-
-QString SlideManager::titleAt(int idx) const {
-    if(idx<0||idx>=m_model.rowCount()) return QString();
-    QModelIndex mi = m_model.index(idx,0);
-    return m_model.data(mi, SlideModel::TitleRole).toString();
-}
-
-QString SlideManager::notesAt(int idx) const {
-    if(idx<0||idx>=m_model.rowCount()) return QString();
-    QModelIndex mi = m_model.index(idx,0);
-    return m_model.data(mi, SlideModel::NotesRole).toString();
-}
-
-QString SlideManager::dueDateAt(int idx) const {
-    if(idx<0||idx>=m_model.rowCount()) return QString();
-    QModelIndex mi = m_model.index(idx,0);
-    return m_model.data(mi, SlideModel::DueDateRole).toString();
-}
-
-QString SlideManager::componentRoleAt(int idx) const {
-    if(idx<0||idx>=m_model.rowCount()) return QString();
-    QModelIndex mi = m_model.index(idx,0);
-    return m_model.data(mi, SlideModel::ComponentRole).toString();
-}
-
-void SlideManager::setNotes(int idx, const QString &n) {
-    m_model.setData(m_model.index(idx,0), n, SlideModel::NotesRole);
-}
-
-void SlideManager::setDueDate(int idx, const QString &d) {
-    m_model.setData(m_model.index(idx,0), d, SlideModel::DueDateRole);
-}
 //arrow head functions
 
 void SlideManager::next() {
-    m_currentIndex = (m_currentIndex + 1) % m_model.rowCount();
+    m_currentIndex = (m_currentIndex + 1) % NB_MODES;
     emit currentIndexChanged();
 }
 
 void SlideManager::previous() {
-    m_currentIndex = (m_currentIndex-1 + m_model.rowCount()) % m_model.rowCount();
+    m_currentIndex = (m_currentIndex-1 + NB_MODES) % NB_MODES;
     emit currentIndexChanged();
 }
 
@@ -89,4 +51,7 @@ void SlideManager::moveResourceToTimeAt(int src, int dst) {
         m_timeItems.setData(m_timeItems.index(dst,0), v, Qt::DisplayRole);
     }
 //validation service call function
+
+
+
 

@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+
 Rectangle {
     id: root
     anchors.fill: parent
@@ -13,17 +14,21 @@ Rectangle {
     DropArea {
         id: dropArea
         anchors.fill: parent
+        keys : ["application/x-item-index"]
+
 
 
 
         onDropped: function(drag) {
             var src = parseInt(drag.getDataAsString("application/x-item-index"));
-            console.log(src);
-            var dst = Math.floor(drag.x / grid.cellWidth);
+
+            var dst = Math.floor(drag.x / slideManager.count());
             if (acceptDrop === "workToTime")
                 slideManager.moveWorkToTimeAt(src, dst);
             else if (acceptDrop === "resourceToTime")
                 slideManager.moveResourceToTimeAt(src, dst);
+
+            drag.acceptProposedAction()
         }
     }
 }

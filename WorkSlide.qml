@@ -12,6 +12,7 @@ Rectangle {
     property var listModel
 
         ListView {
+            id: list
             anchors.fill: parent
             clip: false
             model: listModel
@@ -33,9 +34,10 @@ Rectangle {
                     drag.target: delegateItem
                     onPressAndHold : {
                         drag.startDrag(Qt.CopyAction)
-                        drag.YAxis
+                        console.log("drag started")
                     }
                 }
+                Drag.keys : ["application/x-item-index"]
                 Drag.active : dragArea.drag.active
                 Drag.hotSpot.x: width/2; Drag.hotSpot.y: height/2
                 Drag.mimeData: { "application/x-item-index":  index.toString()}
