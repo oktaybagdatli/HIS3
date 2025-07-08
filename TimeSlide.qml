@@ -22,7 +22,7 @@ Rectangle {
         onDropped: function(drag) {
             var src = parseInt(drag.getDataAsString("application/x-item-index"));
 
-            var dst = Math.floor(drag.x / slideManager.count());
+            var dst = Math.floor(drag.x / 3/* a changer apres */);
             if (acceptDrop === "workToTime")
                 slideManager.moveWorkToTimeAt(src, dst);
             else if (acceptDrop === "resourceToTime")

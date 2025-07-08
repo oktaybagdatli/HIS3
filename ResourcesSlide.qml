@@ -33,15 +33,17 @@ Rectangle {
                     anchors.fill: parent
                     drag.target : delegateItem
 
-                    onClicked: {
-                        drag.startDrag(Qt.CopyAction)
-                        console.log("drag started")
-                    }
+
 
                     onPressAndHold:{
                         drag.startDrag(Qt.CopyAction)
                         console.log("drag start")
 
+                    }
+
+                    onReleased : {
+                        console.log("Released")
+                        delegateItem.Drag.drop()
                     }
                 }
                 Drag.keys: ["application/x-item-index"]
