@@ -123,12 +123,15 @@ Window {
                         switch (slideManager.currentIndex) {
                                         case 0: // Work→Time
                                             item.listModel = slideManager.workItemsModel
+
                                             break
                                         case 2: // Work→Resources
                                             item.listModel = slideManager.workItemsModel
+
                                             break
                                         case 1: // Resources→Time
                                             item.listModel = slideManager.resourceItemsModel
+
                                             break
                         }
 

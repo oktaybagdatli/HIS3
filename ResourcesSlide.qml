@@ -3,12 +3,14 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 Rectangle {
+    id : root
     color: "#50E3C2"
     radius: 8
     anchors.fill: parent
     clip:false
 
     property var listModel
+
 
         ListView {
             id:list
