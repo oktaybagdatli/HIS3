@@ -19,8 +19,11 @@ Rectangle {
             model: listModel
             delegate: Item {
                 id : delegateItem
-                property var initial_x
-                property var initial_y
+
+                property int myIndex: index
+
+                property real initial_x
+                property real initial_y
                 width: 40; height: 40
                 Text {
                     id : label
@@ -37,6 +40,7 @@ Rectangle {
                     drag.target: delegateItem
 
                     onPressed: {
+                        console.log(index)
                         delegateItem.initial_x = delegateItem.x
                         delegateItem.initial_y = delegateItem.y
 
@@ -48,24 +52,17 @@ Rectangle {
                     }
                     onReleased: {
                         //returning to their old places
-                        if(root.contains(delegateItem) || !loaderB.contains(Qt.point(delegateItem.Drag.x, delegateItem.Drag.y))){
-                            console.log(root.contains(delegateItem))
-                            console.log(!loaderB.contains(Qt.point(delegateItem.Drag.x, delegateItem.Drag.y)))
+                        let result = delegateItem.Drag.drop();
+                        if (result === Qt.IgnoreAction)
+                        {
                             delegateItem.x = delegateItem.initial_x
                             delegateItem.y = delegateItem.initial_y
-                            delegateItem.Drag.cancel()
-                            return
                         }
-
-                        delegateItem.Drag.drop()
-                        console.log("released")
-
                     }
                 }
-                Drag.keys : ["application/x-item-index"]
+                Drag.keys : ["WORK"]
                 Drag.active : dragArea.drag.active
                 Drag.hotSpot.x: width/2; Drag.hotSpot.y: height/2
-                Drag.mimeData: { "application/x-item-index":  index.toString()}
 
             }
         }

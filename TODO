@@ -1,0 +1,15 @@
+	- Fix the order of the drag and drop list models
+	- Create a list view in timeSLide to visualize 
+	- Think about the functionalities
+	- Update the modellists
+	- Make the items return if not placed correctly
+	- Create custom lists to hold controller typed models
+	- Qml correction and think about the possibilities
+	- Change rectangle places and try
+
+
+	- After those
+		○ Add buttons 
+		○ Add filtering
+		○ Interactivity
+

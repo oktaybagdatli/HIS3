@@ -9,22 +9,37 @@ Rectangle {
     radius: 8
 
     property var   listModel
-    property string acceptDrop   // "workToTime" or "resourceToTime"
+    property string acceptDrop   // "workToTime" or "resourceToTime" arranged in the Main.qml in OnLoaded:
 
     DropArea {
         id: dropArea
         anchors.fill: parent
-        keys : ["application/x-item-index"]
+       // keys : ["WORK"]
 
 
 
 
         onDropped: function(drag) {
-            var src = parseInt(drag.getDataAsString("application/x-item-index"));
+            //TODO : how to recieve the data
+
+            if (!drag.source)
+            {
+                drag.accept = false;
+                return;
+              }
+
+            // ------------------------------------------------
+            var src = drag.source.myIndex;
+            //var src = Drag.mimeData["application/x-item-index"]
+            //-------------------------------------------------
+
+            console.log("src ",src)
 
             var dst = Math.floor(drag.x / 3/* a changer apres */);
-            if (acceptDrop === "workToTime")
-                slideManager.moveWorkToTimeAt(src, dst);
+            console.log("dst", dst)
+            console.log("drop recieved")
+            if (drag.keys.includes("WORK"))
+                slideManager.moveWorkToTime(src);
             else if (acceptDrop === "resourceToTime")
                 slideManager.moveResourceToTimeAt(src, dst);
 

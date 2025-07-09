@@ -1,5 +1,6 @@
 #include "slidemanager.h"
 #include <QModelIndex>
+#include <iostream>
 
 
 SlideManager::SlideManager(QObject *parent)
@@ -8,7 +9,7 @@ SlideManager::SlideManager(QObject *parent)
 
 
     //initialization with the service calls
-    //get operators, activitys, shifts(maybe not)
+    //get operators, activities
     m_workItems.setStringList({"task a", "task b", "task c"});
     m_resourceItems.setStringList({"operator 1", "operator 2", "operator 3"});
     m_timeItems.setStringList({});
@@ -30,7 +31,21 @@ void SlideManager::previous() {
 //drag and drop handlers for each option
 //service calls to update the model
 
-void SlideManager::moveWorkToTimeAt(int src, int dst) {
+void SlideManager::moveWorkToTime(int src)
+{
+    auto workItems = m_workItems.stringList();
+    if ((0 <= src) && (src < workItems.count()))
+    {
+        auto work = workItems.takeAt(src);
+        auto timeItems = m_timeItems.stringList();
+        timeItems.append(work);
+
+        m_workItems.setStringList(workItems);
+        m_timeItems.setStringList(timeItems);
+    }
+
+    /*
+    //std::cout << src << std::endl;
         if (src < 0 || src >= m_workItems.rowCount()) return;
         QString v = m_workItems.data(m_workItems.index(src,0), Qt::DisplayRole).toString();
         m_workItems.removeRows(src,1);
@@ -39,7 +54,9 @@ void SlideManager::moveWorkToTimeAt(int src, int dst) {
         if (src < dst) dst--;
         m_timeItems.insertRow(dst);
         m_timeItems.setData(m_timeItems.index(dst,0), v, Qt::DisplayRole);
-    }
+
+*/
+}
 
 void SlideManager::moveResourceToTimeAt(int src, int dst) {
         if (src < 0 || src >= m_resourceItems.rowCount()) return;

@@ -52,7 +52,7 @@ Rectangle {
                 Drag.active: dragArea.drag.active
                 Drag.hotSpot.x: width/2
                 Drag.hotSpot.y: height/2
-                Drag.mimeData: { "application/x-item-index": index.toString() }
+                Drag.mimeData: { "application/x-item-index": delegateItem.index }
 
             }
 
