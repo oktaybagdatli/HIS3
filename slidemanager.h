@@ -34,7 +34,7 @@ public:
     //Q_INVOKABLE void moveWorkToResource(int idx);
     //Q_INVOKABLE void moveResourceToTime(int idx);
     Q_INVOKABLE void moveWorkToTime(int srcIndex);
-    Q_INVOKABLE void moveResourceToTimeAt(int srcIndex, int dstIndex);
+    Q_INVOKABLE void moveResourceToTime(int srcIndex);
 
 signals:
     void currentIndexChanged();

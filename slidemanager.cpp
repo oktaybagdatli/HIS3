@@ -12,7 +12,7 @@ SlideManager::SlideManager(QObject *parent)
     //get operators, activities
     m_workItems.setStringList({"task a", "task b", "task c"});
     m_resourceItems.setStringList({"operator 1", "operator 2", "operator 3"});
-    m_timeItems.setStringList({});
+    m_timeItems.setStringList({"","","","",""});
 
 }
 
@@ -43,8 +43,23 @@ void SlideManager::moveWorkToTime(int src)
         m_workItems.setStringList(workItems);
         m_timeItems.setStringList(timeItems);
     }
+}
+void SlideManager::moveResourceToTime(int src){
+    auto resourceItems = m_resourceItems.stringList();
+    if((0 <= src) && (src <resourceItems.count())){
+        auto resource = resourceItems.takeAt(src);
+        auto timeItems = m_timeItems.stringList();
+        timeItems.append(resource);
+
+        m_resourceItems.setStringList(resourceItems);
+        m_timeItems.setStringList(timeItems);
+    }
+}
 
     /*
+     *AFTER PROPER TIME RECTANGLE RETURN TO THESE AND DONT FORGET TO FIX .H
+     *
+void SlideManager::moveWorkToTimeAt(int src, int dst){
     //std::cout << src << std::endl;
         if (src < 0 || src >= m_workItems.rowCount()) return;
         QString v = m_workItems.data(m_workItems.index(src,0), Qt::DisplayRole).toString();
@@ -54,11 +69,12 @@ void SlideManager::moveWorkToTime(int src)
         if (src < dst) dst--;
         m_timeItems.insertRow(dst);
         m_timeItems.setData(m_timeItems.index(dst,0), v, Qt::DisplayRole);
-
-*/
 }
 
-void SlideManager::moveResourceToTimeAt(int src, int dst) {
+*/
+
+
+/*void SlideManager::moveResourceToTimeAt(int src, int dst) {
         if (src < 0 || src >= m_resourceItems.rowCount()) return;
         QString v = m_resourceItems.data(m_resourceItems.index(src,0), Qt::DisplayRole).toString();
         m_resourceItems.removeRows(src,1);
@@ -66,7 +82,7 @@ void SlideManager::moveResourceToTimeAt(int src, int dst) {
         if (src < dst) dst--;
         m_timeItems.insertRow(dst);
         m_timeItems.setData(m_timeItems.index(dst,0), v, Qt::DisplayRole);
-    }
+    }*/
 //validation service call function
 
 

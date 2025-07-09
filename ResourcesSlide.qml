@@ -19,6 +19,10 @@ Rectangle {
             model: listModel
             delegate: Item {
                 id : delegateItem
+                property int myIndex: index
+
+                property real initial_x
+                property real initial_y
                 width: parent.width; height: 40
                 Text {
                     id : label
@@ -35,24 +39,32 @@ Rectangle {
                     anchors.fill: parent
                     drag.target : delegateItem
 
-
+                    onPressed : {
+                        console.log("index of the resource is ", index)
+                        delegateItem.initial_x = delegateItem.x
+                        delegateItem.initial_y = delegateItem.y
+                    }
 
                     onPressAndHold:{
-                        drag.startDrag(Qt.CopyAction)
+                        delegateItem.Drag.startDrag(Qt.CopyAction)
                         console.log("drag start")
 
                     }
 
                     onReleased : {
                         console.log("Released")
-                        delegateItem.Drag.drop()
+                        let result  = delegateItem.Drag.drop()
+                        if(result === Qt.IgnoreAction){
+                            delegateItem.x = delegateItem.initial_x
+                            delegateItem.y = delegateItem.initial_y
+                        }
                     }
                 }
-                Drag.keys: ["application/x-item-index"]
+                Drag.keys: ["RESOURCE"]
                 Drag.active: dragArea.drag.active
                 Drag.hotSpot.x: width/2
                 Drag.hotSpot.y: height/2
-                Drag.mimeData: { "application/x-item-index": delegateItem.index }
+
 
             }
 
