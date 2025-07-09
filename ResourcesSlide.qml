@@ -23,7 +23,7 @@ Rectangle {
 
                 property real initial_x
                 property real initial_y
-                width: parent.width; height: 40
+                width: loaderA.width; height: 40
                 Text {
                     id : label
                     text: model.display
