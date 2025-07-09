@@ -18,7 +18,11 @@ Rectangle {
         model : listModel
         delegate : Item {
             id : delegateItem
-            property int myIndex : index
+
+
+
+
+
             width : loaderB.width;  height : loaderB.height /5
             Text {
                 id : label
@@ -63,11 +67,14 @@ Rectangle {
             console.log("dst", dst)
             */
             console.log("drop recieved")
-            if (drag.keys.includes("WORK"))
+            if (drag.keys.includes("WORK")){
                 slideManager.moveWorkToTime(src);
-            else if (drag.keys.includes("RESOURCE"))
+                console.log("drop type Work")
+            }
+            else if (drag.keys.includes("RESOURCE")){
                 slideManager.moveResourceToTime(src);
-
+                console.log("drop type Resource")
+            }
             drag.acceptProposedAction()
         }
     }

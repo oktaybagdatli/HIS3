@@ -118,6 +118,7 @@ Window {
         // Rectangle 2
         Loader {
                     id: loaderB
+                    //ternary operation with slideManager.currentIndex
                     Layout.preferredWidth: window.width*0.3
                     Layout.preferredHeight: window.height*0.5
                     sourceComponent: pickComponent(2, slideManager.currentIndex)
